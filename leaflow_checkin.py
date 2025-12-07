@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # 配置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -553,9 +553,13 @@ class MultiAccountManager:
             total_count = len(results)
             current_date = datetime.now().strftime("%Y/%m/%d")
             
+            utc_now = datetime.utcnow()
+            beijing_now = utc_now + timedelta(hours=8)
+            now_str = "北京时间 " + beijing_now.strftime("%Y-%m-%d %H:%M:%S")
+
             message = f"🎁 Leaflow自动签到通知\n"
             message += f"📊 成功: {success_count}/{total_count}\n"
-            message += f"📅 签到时间：{current_date}\n\n"
+            message += f"📅 签到时间：{now_str}\n\n"
             
             for email, success, result, balance in results:
                 # 隐藏邮箱部分字符以保护隐私
